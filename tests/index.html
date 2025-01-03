@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dynamic Line Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+myChart {
+    position: absolute;
+    right: 20px; /* Adjust based on your layout */
+    top: 20px; /* Adjust based on your layout */
+    width: 20px;
+    height: 20px;
+}
+</style>
+</head>
+<body>
+
+<canvas id="myChart"></canvas>
+
+<script>
+    const ctx = document.getElementById('myChart').getContext('2d');
+const myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [], // Placeholder for labels
+        datasets: [{
+            label: 'Network Latency (ms)',
+            data: [], // Placeholder for data points
+            borderWidth: 1,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+        }]
+    },
+    options: {
+      responsive: false,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// Function to update the chart by adding new data points
+function updateChart(time, value) {
+    myChart.data.labels.push(time);
+    myChart.data.datasets.forEach((dataset) => {
+        dataset.data.push(value);
+    });
+    myChart.update();
+}
+
+// Example of adding new data every second
+setInterval(() => {
+    const now = new Date();
+    updateChart(now.toLocaleTimeString(), Math.random() * 100);
+}, 1000);
+
+</script>
+
+</body>
+</html>

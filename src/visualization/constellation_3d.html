@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>LEO 卫星星座</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+      <style>
+        chartsContainer {
+            display: flex;
+            justify-content: space-around; /* This will space your charts equally */
+            align-items: center; /* This will center them vertically */
+        }
+        .chart {
+            flex-basis: 45%; /* Each chart will take up 45% of the flex container width */
+        }
+    </style>
+</head>
+<body>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.137.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.137.0/examples/js/controls/TrackballControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="js/test.js"></script>
+<div id="chartsContainer">
+    <canvas id="myChart" class="chart"></canvas>
+    <canvas id="myChart2" class="chart"></canvas>
+    <button id="toggleConnections" onclick="toggleSatelliteConnections()">显示/隐藏网络拓扑</button>
+</div>
+
+<script>
+const ctx = document.getElementById('myChart').getContext('2d');
+const myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [], // Placeholder for labels
+        datasets: [{
+            label: 'Network Latency (ms)',
+            data: [], // Placeholder for data points
+            borderWidth: 1,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+        }]
+    },
+    options: {
+        responsive: false,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+const ctx2 = document.getElementById('myChart2').getContext('2d');
+const myChart2 = new Chart(ctx2, {
+    type: 'line',
+    data: {
+        labels: [], // Placeholder for labels
+        datasets: [{
+            label: 'Packet loss rate',
+            data: [], // Placeholder for data points
+            borderWidth: 1,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+        }]
+    },
+    options: {
+        responsive: false,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// Function to update the chart by adding new data points
+function updateChart(time, value) {
+    myChart.data.labels.push(time);
+    myChart.data.datasets.forEach((dataset) => {
+        dataset.data.push(value);
+    });
+    myChart.update();
+}
+function updateChart2(time, value) {
+    myChart2.data.labels.push(time);
+    myChart2.data.datasets.forEach((dataset) => {
+        dataset.data.push(value);
+    });
+    myChart2.update();
+}
+
+</script>
+</body>
+</html>
